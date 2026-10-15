@@ -1,0 +1,30 @@
+'use strict';
+// Regression checks for the final 7.0 UX revisions. Full interactions are
+// additionally exercised through the isolated browser integration preview.
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const app=fs.readFileSync('./public/app.js','utf8');
+const css=fs.readFileSync('./public/style.css','utf8');
+const index=fs.readFileSync('./public/index.html','utf8');
+const B=require('./engine');
+assert.equal(B.SLOTS.length,15,'Never change the number of team slots');
+assert.equal(B.FIELD_IDS.length,10,'Still ten starters including the pitcher and DH');
+assert.match(app,/function inlineBaseStats\(id\)/);
+assert.match(app,/\['HP',p\.hp\],\['ATK',p\.atk\],\['DEF',p\.def\],\['SpA',p\.spa\],\['SpD',p\.spd\],\['SPE',p\.spe\]/);
+assert.match(app,/function candidateCard\(id,action,selectedId,locked=false\)/);
+assert.match(app,/pokemon-stat-strip/);
+assert.doesNotMatch(app,/>BST\s*\$\{/,'Do not display BST on selectable Pokémon cards');
+assert.doesNotMatch(app,/\?detail\(/,'Picking Pokémon must not insert a separate stats card');
+assert.match(app,/function selectVisibleCandidate\(context,id\)/);
+assert.match(app,/function openTeamPreview\(button\)/);
+assert.match(app,/data-preview-team="\$\{esc\(x\.s\.id\)\}"/);
+assert.match(app,/team-preview-slots/);
+assert.doesNotMatch(app,/Teams in this league/,'Avoid an extra team-switching roster section');
+assert.match(app,/\[order\[i\],order\[j\]\]=\[order\[j\],order\[i\]\]/);
+assert.doesNotMatch(app,/order\.splice\(i,1\)/,'Bat # must swap two batters without shifting the rest');
+assert.match(css,/\.pokemon-pool\.inline-stats-pool/);
+assert.match(css,/\.draft-team-preview/);
+assert.match(css,/max-width:1290px/);
+assert.match(index,/id="weekly-link"/);
+assert.match(index,/href="\/guide\.html" target="_blank"/);
+console.log('PASS 7.0 UI refinement: inline six stats, no BST/expanded cards, team popover, two-way batting swaps, smaller layout, preserved navigation and 15-slot roster.');

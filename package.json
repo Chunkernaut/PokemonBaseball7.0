@@ -1,0 +1,13 @@
+{
+  "name": "pokemon-baseball-draft-v7-0",
+  "version": "0.7.0",
+  "private": true,
+  "description": "Pokémon Baseball 7.0: compact classic game UI, inline base stats, draft-order team previews, exact two-spot batting swaps, Weekly 151, spectators, standalone guide",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node type-balance-test.js && node fatigue-test.js && node special-events-test.js && node smoke-test.js && node draft-bot-test.js && node v55-test.js && node v56-test.js && node v60-test.js && node v61-test.js && node v62-test.js && node v70-test.js && node v70-http-test.js && node v70-ui-test.js"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}
